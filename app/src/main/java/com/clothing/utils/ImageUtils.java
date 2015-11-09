@@ -1,0 +1,58 @@
+package com.clothing.utils;
+
+import android.content.Context;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.net.Uri;
+import android.provider.MediaStore;
+
+import java.io.IOException;
+
+/**
+ * Created by mihir.shah on 11/8/2015.
+ */
+public class ImageUtils {
+
+    public static final int PICK_IMAGE_ACTION = 0x100, SCALED_SIZE = 320;
+
+    public static int getOrientation(Context context, Uri photoUri) {
+        Cursor cursor = context.getContentResolver().query(photoUri,
+                new String[] { MediaStore.Images.ImageColumns.ORIENTATION},
+                null, null, null);
+
+        try {
+            if (cursor.moveToFirst()) {
+                return cursor.getInt(0);
+            } else {
+                return -1;
+            }
+        } finally {
+            cursor.close();
+        }
+    }
+
+    public static Bitmap getImage(Context context, Uri photoUri) throws IOException {
+        // Handle rotation
+        int rotation = getOrientation(context, photoUri);
+        Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), photoUri);
+        if(rotation != -1) {
+            Matrix matrix = new Matrix();
+            matrix.postRotate(rotation);
+            bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+        }
+        return bitmap;
+    }
+
+    public static Bitmap scaledBitmap(Bitmap bitmap, int width, int height) {
+        float ratio = Math.min(
+                (float) width / bitmap.getWidth(),
+                (float) height / bitmap.getHeight());
+        int newWidth = Math.round((float) ratio * bitmap.getWidth());
+        int newHeight = Math.round((float) ratio * bitmap.getHeight());
+
+        Bitmap newBitmap = Bitmap.createScaledBitmap(bitmap, newWidth,
+                newHeight, true);
+        return newBitmap;
+    }
+}
