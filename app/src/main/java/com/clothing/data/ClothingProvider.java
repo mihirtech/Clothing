@@ -78,6 +78,7 @@ public class ClothingProvider extends ContentProvider {
         }
         if (cursor != null) {
             cursor.setNotificationUri(getContext().getContentResolver(), uri);
+            Log.d(TAG, "Cursor count "+cursor.getCount());
         }
         return cursor;
     }

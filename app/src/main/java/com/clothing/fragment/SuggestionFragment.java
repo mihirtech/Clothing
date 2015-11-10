@@ -10,7 +10,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.clothing.R;
-import com.squareup.picasso.Picasso;
+import com.clothing.model.PairInfo;
+import com.clothing.utils.ImageUtils;
+
+import java.io.IOException;
 
 /**
  * Created by mihir.shah on 11/9/2015.
@@ -34,12 +37,31 @@ public class SuggestionFragment extends Fragment {
         return fragment;
     }
 
+    public static SuggestionFragment getInstance(PairInfo clothInfo) {
+        SuggestionFragment fragment = new SuggestionFragment();
+        Bundle bundle = new Bundle();
+        if (clothInfo != null) {
+            bundle.putParcelable(SHIRT, clothInfo.getShirtUri());
+            bundle.putParcelable(PANT, clothInfo.getPantUri());
+        }
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.suggestion_fragment, container, false);
         initView();
         return mRootView;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mShirtUri = getArguments().getParcelable(SHIRT);
+        mPantUri = getArguments().getParcelable(PANT);
+        updateImages();
     }
 
     void initView() {
@@ -49,13 +71,18 @@ public class SuggestionFragment extends Fragment {
 
     void updateImages() {
         if (mShirtUri != null) {
-            /*try {
-                 mShirtImage.setImageBitmap(ImageUtils.scaledBitmap(ImageUtils.getImage(getActivity(), mShirtUri), ImageUtils.SCALED_SIZE, ImageUtils.SCALED_SIZE));
-
+            try {
+                mShirtImage.setImageBitmap(ImageUtils.scaledBitmap(ImageUtils.getImage(getActivity(), mShirtUri), ImageUtils.SCALED_SIZE, ImageUtils.SCALED_SIZE));
             } catch (IOException ex) {
                 ex.printStackTrace();
-            }*/
-            Picasso.with(getActivity()).load(mShirtUri).into(mShirtImage);
+            }
+        }
+        if (mPantUri != null) {
+            try {
+                mPantImage.setImageBitmap(ImageUtils.scaledBitmap(ImageUtils.getImage(getActivity(), mPantUri), ImageUtils.SCALED_SIZE, ImageUtils.SCALED_SIZE));
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 

@@ -9,6 +9,7 @@ import com.clothing.data.ClothDbUtils;
 import com.clothing.data.ClothingProvider;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by mihir.shah on 11/9/2015.
@@ -23,6 +24,8 @@ public class ImageSelector {
 
     ArrayList<Uri> mShirtUri, mPantUri;
 
+    Random mRandom;
+
     public static ImageSelector getInstance(Context context) {
         if (sImageSelector == null) {
             sImageSelector = new ImageSelector(context);
@@ -36,7 +39,9 @@ public class ImageSelector {
     }
 
     public void init() {
+        mClothObserver = new ClothObserver(new Handler());
         mContext.getContentResolver().registerContentObserver(ClothingProvider.AddedImagesColumns.CONTENT_URI, true, mClothObserver);
+        mRandom = new Random();
         updateList();
     }
 
@@ -47,6 +52,13 @@ public class ImageSelector {
     void updateList() {
         mShirtUri = ClothDbUtils.getClothList(mContext, ClothingProvider.AddedImagesColumns.TYPE_SHIRT);
         mPantUri = ClothDbUtils.getClothList(mContext, ClothingProvider.AddedImagesColumns.TYPE_PANT);
+    }
+
+    public PairInfo getRandomItem() {
+        PairInfo info = null;
+        Uri shirtUri = mShirtUri.size() == 0 ? null : mShirtUri.get(mRandom.nextInt(mShirtUri.size()));
+        Uri pantUri = mPantUri.size() == 0 ? null : mPantUri.get(mRandom.nextInt(mPantUri.size()));
+        return new PairInfo(shirtUri, pantUri);
     }
 
     class ClothObserver extends ContentObserver {

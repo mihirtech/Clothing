@@ -28,7 +28,6 @@ public class ClothDbUtils {
         ArrayList<Uri> uriList = new ArrayList<Uri>();
 
         if (cursor != null) {
-            Uri[] clothList = new Uri[cursor.getCount()];
             if (cursor.moveToFirst()) {
                 int uriColumn = cursor.getColumnIndex(ClothingProvider.AddedImagesColumns.URI);
                 do {
