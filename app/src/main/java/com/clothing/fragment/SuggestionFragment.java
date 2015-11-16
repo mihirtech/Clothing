@@ -92,6 +92,17 @@ public class SuggestionFragment extends Fragment {
         notifyDataChanged();
     }
 
+    public void setImages(PairInfo info) {
+        if (!info.isValid()) return;
+        mShirtUri = info.getShirtUri();
+        mPantUri = info.getPantUri();
+        notifyDataChanged();
+    }
+
+    public PairInfo getPair() {
+        return new PairInfo(mShirtUri, mPantUri);
+    }
+
     void notifyDataChanged() {
         updateImages();
     }

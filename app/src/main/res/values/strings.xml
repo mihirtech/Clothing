@@ -10,4 +10,7 @@
     <string name="cloth_type">Cloth type</string>
     <string name="cloth_added_msg">Cloth added to your list</string>
     <string name="cloth_already_added">Cloth already added</string>
+    <string name="added_to_favorites">Pair added to favorites</string>
+    <string name="error_adding_favorite">An error occurred while adding to favorites</string>
+    <string name="added_to_disliked">Got it ! We won\'t be recommending you this pair again</string>
 </resources>

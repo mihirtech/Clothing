@@ -11,7 +11,7 @@ public class PairInfo implements Parcelable {
 
     Uri mShirtUri, mPantUri;
 
-    PairInfo(Uri shirtUri, Uri pantUri) {
+    public PairInfo(Uri shirtUri, Uri pantUri) {
         mShirtUri = shirtUri;
         mPantUri = pantUri;
     }
@@ -53,4 +53,8 @@ public class PairInfo implements Parcelable {
             return new PairInfo[size];
         }
     };
+
+    public boolean isValid() {
+        return mShirtUri != null && mPantUri != null;
+    }
 }

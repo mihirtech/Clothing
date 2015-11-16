@@ -18,7 +18,7 @@ public class ImageUtils {
 
     public static int getOrientation(Context context, Uri photoUri) {
         Cursor cursor = context.getContentResolver().query(photoUri,
-                new String[] { MediaStore.Images.ImageColumns.ORIENTATION},
+                new String[]{MediaStore.Images.ImageColumns.ORIENTATION},
                 null, null, null);
 
         try {
@@ -45,6 +45,10 @@ public class ImageUtils {
     }
 
     public static Bitmap scaledBitmap(Bitmap bitmap, int width, int height) {
+        if (bitmap.getWidth() < width && bitmap.getHeight() < height) {
+            return bitmap;
+        }
+
         float ratio = Math.min(
                 (float) width / bitmap.getWidth(),
                 (float) height / bitmap.getHeight());
