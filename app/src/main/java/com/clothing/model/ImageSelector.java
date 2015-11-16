@@ -55,11 +55,13 @@ public class ImageSelector {
     }
 
     public PairInfo getRandomItem() {
-        Uri shirtUri, pantUri;
+        Uri shirtUri = null, pantUri = null;
+        int trials = 0;
+        final int MAX_TRIALS = 32;
         do {
             shirtUri = mShirtUri.size() == 0 ? null : mShirtUri.get(mRandom.nextInt(mShirtUri.size()));
             pantUri = mPantUri.size() == 0 ? null : mPantUri.get(mRandom.nextInt(mPantUri.size()));
-        } while (!ClothDbUtils.isValidRandomPair(mContext, shirtUri, pantUri));
+        } while (!ClothDbUtils.isValidRandomPair(mContext, shirtUri, pantUri) && trials++ < MAX_TRIALS);
         return new PairInfo(shirtUri, pantUri);
     }
 

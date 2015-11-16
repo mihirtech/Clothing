@@ -13,4 +13,5 @@
     <string name="added_to_favorites">Pair added to favorites</string>
     <string name="error_adding_favorite">An error occurred while adding to favorites</string>
     <string name="added_to_disliked">Got it ! We won\'t be recommending you this pair again</string>
+    <string name="no_pair_found">No pair found</string>
 </resources>

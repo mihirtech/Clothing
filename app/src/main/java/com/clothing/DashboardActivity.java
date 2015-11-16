@@ -20,6 +20,7 @@ import com.clothing.data.ClothDbUtils;
 import com.clothing.dialog.ClothChoiceFragment;
 import com.clothing.fragment.SuggestionFragment;
 import com.clothing.model.ImageSelector;
+import com.clothing.model.PairInfo;
 import com.clothing.utils.ImageUtils;
 
 public class DashboardActivity extends AppCompatActivity
@@ -138,6 +139,11 @@ public class DashboardActivity extends AppCompatActivity
     }
 
     void getNewPair() {
-        mFragment.setImages(mSelector.getRandomItem());
+        PairInfo info = mSelector.getRandomItem();
+        if (!info.isValid()) {
+            Toast.makeText(this, R.string.no_pair_found, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        mFragment.setImages(info);
     }
 }
