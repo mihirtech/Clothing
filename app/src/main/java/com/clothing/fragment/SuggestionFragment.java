@@ -72,14 +72,16 @@ public class SuggestionFragment extends Fragment {
     void updateImages() {
         if (mShirtUri != null) {
             try {
-                mShirtImage.setImageBitmap(ImageUtils.scaledBitmap(ImageUtils.getImage(getActivity(), mShirtUri), ImageUtils.SCALED_SIZE, ImageUtils.SCALED_SIZE));
+                mShirtImage.setImageBitmap(ImageUtils.getBitmap(getActivity(), mShirtUri,
+                        ImageUtils.SCALED_SIZE, ImageUtils.SCALED_SIZE));
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
         }
         if (mPantUri != null) {
             try {
-                mPantImage.setImageBitmap(ImageUtils.scaledBitmap(ImageUtils.getImage(getActivity(), mPantUri), ImageUtils.SCALED_SIZE, ImageUtils.SCALED_SIZE));
+                mPantImage.setImageBitmap(ImageUtils.getBitmap(getActivity(), mPantUri,
+                        ImageUtils.SCALED_SIZE, ImageUtils.SCALED_SIZE));
             } catch (IOException ex) {
                 ex.printStackTrace();
             }

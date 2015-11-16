@@ -7,6 +7,8 @@ import android.graphics.Matrix;
 import android.net.Uri;
 import android.provider.MediaStore;
 
+import com.clothing.widget.BitmapCache;
+
 import java.io.IOException;
 
 /**
@@ -36,10 +38,11 @@ public class ImageUtils {
         // Handle rotation
         int rotation = getOrientation(context, photoUri);
         Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), photoUri);
-        if(rotation != -1) {
+        if (rotation != -1) {
             Matrix matrix = new Matrix();
             matrix.postRotate(rotation);
-            bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+            bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(),
+                    matrix, true);
         }
         return bitmap;
     }
@@ -63,8 +66,8 @@ public class ImageUtils {
     public static String getRealPathFromURI(Context context, Uri contentUri) {
         Cursor cursor = null;
         try {
-            String[] proj = { MediaStore.Images.Media.DATA };
-            cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
+            String[] proj = {MediaStore.Images.Media.DATA};
+            cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             cursor.moveToFirst();
             return cursor.getString(column_index);
@@ -73,5 +76,17 @@ public class ImageUtils {
                 cursor.close();
             }
         }
+    }
+
+    public static Bitmap getBitmap(Context context, Uri uri, int width, int height) throws
+            IOException {
+        Bitmap bitmap = BitmapCache.getBitmap(uri, width, height);
+        if (bitmap != null) {
+            return bitmap;
+        }
+
+        bitmap = scaledBitmap(getImage(context, uri), SCALED_SIZE, SCALED_SIZE);
+        BitmapCache.putBitmap(uri, bitmap);
+        return bitmap;
     }
 }
